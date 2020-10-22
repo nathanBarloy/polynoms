@@ -36,6 +36,15 @@ class Polynom() :
     def degree(self) :
         return len(self.coeffs)-1
     
+    
+    def evaluate(self, value) :
+        res = 0
+        for x in self.coeffs[::-1] :
+            res *= value
+            res += x
+        return res
+    
+    
     def __iter__(self) :
         self.iter_index=0
         return self
@@ -188,6 +197,15 @@ class Polynom2() :
             return self.coeffs[x_deg].get_coeff(y_deg)
         except IndexError :
             return 0
+    
+    def y_evaluate(self, value) :
+        res = []
+        for p in self.coeffs :
+            res.append(p.evaluate)
+        return Polynom(res)
+    
+    def evaluate(self, x_value, y_value) :
+        return self.y_evaluate(y_value).evaluate(x_value)
     
     def __iter__(self) :
         self.iter_index = 0
