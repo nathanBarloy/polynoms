@@ -150,6 +150,19 @@ class Polynom() :
     
     def __len__(self) :
         return len(self.coeffs)
+    
+    
+    def derivate(self) :
+        res = []
+        for i in range(1, len(self.coeffs)) :
+            res.append(self.coeffs[i]*i)
+        return Polynom(res)
+    
+    def integrate(self, c=0) :
+        res = [c]
+        for i in range(len(self.coeffs)) :
+            res.append(self.coeffs[i]/(i+1))
+        return Polynom(res)
             
 
 
