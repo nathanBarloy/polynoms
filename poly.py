@@ -156,6 +156,8 @@ class Polynom() :
 
 
 
+
+
 class Polynom2() :
     """
     A polynom of 2 variables
@@ -201,7 +203,17 @@ class Polynom2() :
     def y_evaluate(self, value) :
         res = []
         for p in self.coeffs :
-            res.append(p.evaluate)
+            res.append(p.evaluate(value))
+        return Polynom(res)
+    
+    def x_evaluate(self, value) :
+        m = max([e.degree() for e in self.coeffs])
+        res = []
+        for i in range(m+1) :
+            tot = 0
+            for j in range(len(self.coeffs)) :
+                tot += self.get_coeff(j,i)
+            res.append(tot)
         return Polynom(res)
     
     def evaluate(self, x_value, y_value) :
