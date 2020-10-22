@@ -191,8 +191,11 @@ class Polynom2() :
             max_deg-=1
         self.coeffs = self.coeffs[:max_deg+1]
     
-    def degree(self) :
+    def x_degree(self) :
         return len(self.coeffs)-1
+    
+    def y_degree(self) :
+        return max([e.degree() for e in self.coeffs])
     
     def __len__(self) :
         return len(self.coeffs)
@@ -213,6 +216,12 @@ class Polynom2() :
         except IndexError :
             return 0
     
+    def get_matrix(self) :
+        res = []
+        for p in self.coeffs :
+            res.append(p.coeffs)
+        return res
+    
     def y_evaluate(self, value) :
         res = []
         for p in self.coeffs :
@@ -220,7 +229,7 @@ class Polynom2() :
         return Polynom(res)
     
     def x_evaluate(self, value) :
-        m = max([e.degree() for e in self.coeffs])
+        m = self.y_degree()
         res = []
         for i in range(m+1) :
             tot = 0
@@ -270,13 +279,13 @@ class Polynom2() :
     
     def __add__(self, other) :
         res = []
-        for d in range(max(self.degree(), other.degree())+1) :
+        for d in range(max(self.x_degree(), other.x_degree())+1) :
             res.append(self.get_coeff(d) + other.get_coeff(d))
         return Polynom2(res)
     
     def __iadd__(self, other) :
         res = []
-        for d in range(max(self.degree(), other.degree())+1) :
+        for d in range(max(self.x_degree(), other.x_degree())+1) :
             res.append(self.get_coeff(d) + other.get_coeff(d))
         self.coeffs = res
         self.simplify()
@@ -296,8 +305,8 @@ class Polynom2() :
         
         if isinstance(other, Polynom2) :
             res = []
-            deg1 = self.degree()
-            deg2 = other.degree()
+            deg1 = self.x_degree()
+            deg2 = other.x_degree()
             for d in range(deg1+deg2+1) :
                 aux = Polynom()
                 for i in range(max(0,d-deg2), min(deg1, d)+1) :
@@ -318,8 +327,8 @@ class Polynom2() :
         
         if isinstance(other, Polynom2) :
             res = []
-            deg1 = self.degree()
-            deg2 = other.degree()
+            deg1 = self.x_degree()
+            deg2 = other.x_degree()
             for d in range(deg1+deg2+1) :
                 aux = Polynom()
                 for i in range(max(0,d-deg2), min(deg1, d)+1) :
