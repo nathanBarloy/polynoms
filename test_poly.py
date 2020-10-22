@@ -34,10 +34,15 @@ class Test_Polynom(unittest.TestCase) :
         res = p.degree()
         self.assertEqual(res, 3)
     
-    def test_get_value(self) :
+    def test_get_value1(self) :
         p = Polynom([0,-1,2])
         res = p.get_coeff(1)
         self.assertEqual(res, -1)
+    
+    def test_get_value2(self) :
+        p = Polynom([0,-1,2])
+        res = p.get_coeff(5)
+        self.assertEqual(res, 0)
         
     def test_set_value1(self) :
         p = Polynom([0,-1,2])
@@ -155,6 +160,58 @@ class Test_Polynom(unittest.TestCase) :
         p = Polynom([2,-1,0,6])
         res = p.integrate(7).coeffs
         self.assertEqual(res, [7,2,-0.5,0,1.5])
+        
+
+
+
+class Test_Polynom2(unittest.TestCase) :
+    
+    def test_create_empty(self) :
+        p = Polynom2()
+        self.assertIsNotNone(p)
+        
+    def test_create_not_empty1(self) :
+        p = Polynom2([[0,-1], [1,1]])
+        self.assertIsNotNone(p)
+        
+    def test_create_not_empty2(self) :
+        p = Polynom2([Polynom([0,-1]), Polynom([1,1])])
+        self.assertIsNotNone(p)
+        
+    def test_get_matrix(self) :
+        p = Polynom2([[0,-1], [1,1]])
+        res = p.get_matrix()
+        self.assertEqual(res, [[0,-1], [1,1]])
+        
+    def test_constructor(self) :
+        p = Polynom2([Polynom([0,-1]), Polynom([1,1])])
+        res = p.get_matrix()
+        self.assertEqual(res, [[0,-1], [1,1]])
+        
+    def test_simplify(self) :
+        p = Polynom2([[0,0],[1,0],[2,1],[0,0],[]])
+        res = p.get_matrix()
+        self.assertEqual(res, [[],[1],[2,1]])
+        
+    def test_get_value1(self) :
+        p = Polynom2([[0,-1], [1,1]])
+        res = p.get_coeff(1,0)
+        self.assertEqual(res, 1)
+        
+    def test_get_value2(self) :
+        p = Polynom2([[0,-1], [1,1]])
+        res = p.get_coeff(4,2)
+        self.assertEqual(res, 0)
+    
+    def test_set_value(self) :
+        p = Polynom2([[0,-1], [1,1]])
+        p.set_coeff(0,1,0)
+        p.set_coeff(3,1,1)
+        p.set_coeff(1,3,-1)
+        res = p.get_matrix()
+        exp = [[],[1,1,0,-1],[],[0,1]]
+        self.assertEqual(res, exp)
+        
     
         
 
