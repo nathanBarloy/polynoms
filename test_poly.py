@@ -161,7 +161,19 @@ class Test_Polynom(unittest.TestCase) :
         res = p.integrate(7).coeffs
         self.assertEqual(res, [7,2,-0.5,0,1.5])
         
-
+    def test_equal1(self) :
+        p1 = Polynom([1,0,2,6])
+        p2 = Polynom([1,0,2,6,0,0])
+        self.assertEqual(p1,p2)
+    
+    def test_equal2(self) :
+        p1 = Polynom([1,0,2,6])
+        p2 = Polynom([1,0,2])
+        self.assertNotEqual(p1,p2)
+        
+        
+        
+        
 
 
 class Test_Polynom2(unittest.TestCase) :
@@ -212,8 +224,62 @@ class Test_Polynom2(unittest.TestCase) :
         exp = [[],[1,1,0,-1],[],[0,1]]
         self.assertEqual(res, exp)
         
-    
+    def test_x_degree(self) :
+        p = Polynom2([[1,2],[],[-1,0,8],[4]])
+        res = p.x_degree()
+        self.assertEqual(res, 3)
         
+    def test_y_degree(self) :
+        p = Polynom2([[1,2],[],[-1,0,8],[4]])
+        res = p.y_degree()
+        self.assertEqual(res, 2)
+        
+    def test_len(self) :
+        p = Polynom2([[1,2],[],[-1,0,8],[4]])
+        res = len(p)
+        self.assertEqual(res, 4)
+        
+    def test_y_evaluate(self) :
+        p1 = Polynom2([[1,2,3],[],[2,-1],[3]])
+        p2 = Polynom([2,0,3,3])
+        res = p1.y_evaluate(-1)
+        self.assertEqual(res, p2)
+        
+    def test_x_evaluate(self) :
+        p1 = Polynom2([[1,2,3],[],[2,-1],[3]])
+        res = p1.x_evaluate(-1).coeffs
+        self.assertEqual(res, [0,1,3])
+        
+    def test_evaluate(self) :
+        p = Polynom2([[1,2,3],[],[2,-1],[3]])
+        res = p.evaluate(2,-1)
+        self.assertEqual(res, 38)
+        
+    def test_string(self) :
+        p = Polynom2([[1,2,3],[],[2,-1],[3]])
+        res = str(p)
+        exp = "1 + 2*y + 3*y^2 + 2*x^2 + -1*x^2*y + 3*x^3"
+        self.assertEqual(res, exp)
+        
+    def test_iter(self) :
+        p = Polynom2([[1,0,3],[],[2,-1],[3]])
+        res = []
+        for x,y,v in p :
+            res.append((x,y,v))
+        exp = [(0,0,1),(0,2,3),(2,0,2),(2,1,-1),(3,0,3)]
+        self.assertEqual(res, exp)
+        
+    def test_add1(self) :
+        p1 = Polynom2([[0,2],[],[1,0,-1],[0,4]])
+        p2 = Polynom2([[1],[0,4],[2,2]])
+        res = (p1+p2).get_matrix()
+        self.assertEqual(res, [[1,2],[0,4],[3,2,-1],[0,4]])
+    
+    def test_add2(self) :
+        p1 = Polynom2([[0,2],[],[1,0,-1],[0,4]])
+        p2 = Polynom2([[1],[0,4],[2,2], [0,-4]])
+        res = (p1+p2).get_matrix()
+        self.assertEqual(res, [[1,2],[0,4],[3,2,-1]])
 
 if __name__ == '__main__' :
     unittest.main()
