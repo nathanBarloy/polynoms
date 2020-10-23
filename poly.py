@@ -163,6 +163,12 @@ class Polynom() :
         for i in range(len(self.coeffs)) :
             res.append(self.coeffs[i]/(i+1))
         return Polynom(res)
+    
+    def __eq__(self, other) :
+        return self.coeffs==other.coeffs
+    
+    def __ne__(self, other) :
+        return not self==other
             
 
 
@@ -233,7 +239,8 @@ class Polynom2() :
         res = []
         for i in range(m+1) :
             tot = 0
-            for j in range(len(self.coeffs)) :
+            for j in range(len(self.coeffs)-1, -1, -1) :
+                tot *= value
                 tot += self.get_coeff(j,i)
             res.append(tot)
         return Polynom(res)
@@ -346,4 +353,8 @@ class Polynom2() :
         self *= 1/other
         return self
         
-            
+    def __eq__(self, other) :
+        return self.coeffs==other.coeffs
+    
+    def __ne__(self, other) :
+        return not self==other
